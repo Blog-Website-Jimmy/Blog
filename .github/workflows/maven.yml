@@ -42,22 +42,22 @@ jobs:
         script: |
           sudo systemctl stop blogBackend.service
 
-    - name: SSH into EC2 instance and update service
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.EC2_PORT }}
-        script: |
-          sudo systemctl daemon-reload
-
-    - name: SSH into EC2 instance and start service
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.EC2_PORT }}
-        script: |
-          sudo systemctl start blogBackend.service
+#    - name: SSH into EC2 instance and update service
+#      uses: appleboy/ssh-action@master
+#      with:
+#        host: ${{ secrets.EC2_HOST }}
+#        username: ${{ secrets.EC2_USERNAME }}
+#        key: ${{ secrets.SSH_PRIVATE_KEY }}
+#        port: ${{ secrets.EC2_PORT }}
+#        script: |
+#          sudo systemctl daemon-reload
+#
+#    - name: SSH into EC2 instance and start service
+#      uses: appleboy/ssh-action@master
+#      with:
+#        host: ${{ secrets.EC2_HOST }}
+#        username: ${{ secrets.EC2_USERNAME }}
+#        key: ${{ secrets.SSH_PRIVATE_KEY }}
+#        port: ${{ secrets.EC2_PORT }}
+#        script: |
+#          sudo systemctl start blogBackend.service
