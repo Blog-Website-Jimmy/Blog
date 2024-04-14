@@ -32,6 +32,6 @@ public class CategoryController {
 
     @GetMapping("status")
     public String getStatus() {
-        return "Category controller is working!";
+        return "Category controller is working fine!";
     }
 }
