@@ -26,7 +26,12 @@ public class CategoryController {
     }
 
     @GetMapping("articles")
-    public ResponseEntity<?> getArticleByOneCategory(@RequestParam int page, @RequestParam int size,@RequestParam String category) {
+    public ResponseEntity<?> getArticleByOneCategory(@RequestParam int page, @RequestParam int size, @RequestParam String category) {
         return ResponseEntity.ok(ArticlePaginated.toArticle(categoryService.getArticlesByCategory(page, size, category)));
+    }
+
+    @GetMapping("status")
+    public String getStatus() {
+        return "Category controller is working!";
     }
 }
