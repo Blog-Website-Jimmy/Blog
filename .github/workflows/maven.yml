@@ -31,3 +31,23 @@ jobs:
         port: ${{ secrets.EC2_PORT }}
         source: "target/BlogBackned-0.0.1-SNAPSHOT.jar"
         target: "/home/ubuntu/blog"
+
+    - name: SSH into EC2 instance and stop service
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.EC2_PORT }}
+        script: |
+          sudo systemctl stop blogBackend.service
+
+    - name: SSH into EC2 instance and start service
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.EC2_PORT }}
+        script: |
+          sudo systemctl start blogBackend.service
