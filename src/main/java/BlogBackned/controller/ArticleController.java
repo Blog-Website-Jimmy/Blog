@@ -3,6 +3,7 @@ package BlogBackned.controller;
 import BlogBackned.model.ArticlePaginated;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.request.ArticlePostRequest;
+import BlogBackned.request.CommentRequest;
 import BlogBackned.service.ArticleService;
 import jakarta.validation.Valid;
 import org.springframework.data.repository.query.Param;
@@ -44,5 +45,11 @@ public class ArticleController {
     @GetMapping("status")
     public String getStatus() {
         return "Article controller is wokring!";
+    }
+
+    @PostMapping("add-comment")
+    public ResponseEntity<String> addComment(@RequestBody CommentRequest request) {
+
+        return ResponseEntity.ok(articleService.addComment(request));
     }
 }

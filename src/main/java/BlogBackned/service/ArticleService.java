@@ -2,6 +2,7 @@ package BlogBackned.service;
 
 import BlogBackned.config.BeanNames;
 import BlogBackned.entity.ArticleEntity;
+import BlogBackned.entity.CommentEntity;
 import BlogBackned.entity.ImageEntity;
 import BlogBackned.exception.ArticleWithThisTitleAlreadyExistsException;
 import BlogBackned.exception.NoAuthorWithThisIdException;
@@ -9,11 +10,9 @@ import BlogBackned.exception.NoCategoryWithThisIdException;
 import BlogBackned.exception.NoImageWithThisIdException;
 import BlogBackned.helper.HelperFunctions;
 import BlogBackned.model.ImageDetails;
-import BlogBackned.repository.ArticleRepository;
-import BlogBackned.repository.AuthorRepository;
-import BlogBackned.repository.CategoryRepository;
-import BlogBackned.repository.ImageRepository;
+import BlogBackned.repository.*;
 import BlogBackned.request.ArticlePostRequest;
+import BlogBackned.request.CommentRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,15 +34,17 @@ public class ArticleService extends HelperFunctions {
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
     private final ImageRepository imageRepository;
+    private final CommentRepository commentRepository;
 
     private final Path uploadImagePath;
 
 
-    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, AuthorRepository authorRepository, ImageRepository imageRepository, @Qualifier(BeanNames.IMAGE_PATH_BEAN_NAME) Path uploadImagePath) {
+    public ArticleService(ArticleRepository articleRepository, CategoryRepository categoryRepository, AuthorRepository authorRepository, ImageRepository imageRepository, CommentRepository commentRepository, @Qualifier(BeanNames.IMAGE_PATH_BEAN_NAME) Path uploadImagePath) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
         this.authorRepository = authorRepository;
         this.imageRepository = imageRepository;
+        this.commentRepository = commentRepository;
         this.uploadImagePath = uploadImagePath;
     }
 
@@ -102,5 +103,14 @@ public class ArticleService extends HelperFunctions {
             images.add(image);
         });
         return images;
+    }
+
+    public String addComment(CommentRequest request) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setAuthor(request.getAuthor());
+        commentEntity.setComment(request.getComment());
+        commentEntity.setArticle(articleRepository.findById(request.getArticleId()).get());
+        commentRepository.save(commentEntity);
+        return "Comment was added successfully!";
     }
 }

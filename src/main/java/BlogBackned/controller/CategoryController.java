@@ -3,8 +3,6 @@ package BlogBackned.controller;
 import BlogBackned.model.ArticlePaginated;
 import BlogBackned.model.Category;
 import BlogBackned.service.CategoryService;
-import jakarta.websocket.server.PathParam;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +26,12 @@ public class CategoryController {
     @GetMapping("articles")
     public ResponseEntity<?> getArticleByOneCategory(@RequestParam int page, @RequestParam int size, @RequestParam String category) {
         return ResponseEntity.ok(ArticlePaginated.toArticle(categoryService.getArticlesByCategory(page, size, category)));
+    }
+
+    @PostMapping("update/{id}")
+    public ResponseEntity<String> updateCategory(@PathVariable("id") long id, @RequestParam("name") String name) {
+        System.out.println(id + " and "+ name);
+        return ResponseEntity.ok(categoryService.updateCategoey(id, name));
     }
 
     @GetMapping("status")

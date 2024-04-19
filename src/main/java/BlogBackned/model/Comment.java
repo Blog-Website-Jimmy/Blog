@@ -8,14 +8,14 @@ import lombok.Setter;
 @Getter
 public class Comment {
     private long id;
-    private Author author;
+    private String author;
     private String comment;
 
     public static Comment toComment(CommentEntity entity) {
         Comment comment = new Comment();
         comment.setId(entity.getId());
         comment.setComment(entity.getComment());
-        comment.setAuthor(Author.toAuthor(entity.getAuthor()));
+        comment.setAuthor(entity.getAuthor());
         return comment;
     }
 }

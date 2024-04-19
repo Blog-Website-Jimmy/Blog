@@ -13,8 +13,7 @@ public class CommentEntity extends TimeIntegration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private AuthorEntity author;
+    private String author;
 
     private String comment;
 

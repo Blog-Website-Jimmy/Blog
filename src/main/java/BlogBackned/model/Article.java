@@ -31,7 +31,8 @@ public class Article {
         article.setAuthor(Author.toAuthor(entity.getAuthor()));
         article.setTags(entity.getTags().stream().map(Tag::toTag).toList());
         article.setCategory(Category.toCategory(entity.getCategory()));
-        article.setComments(entity.getComments().stream().map(Comment::toComment).toList());
+        List<Comment> commentList = entity.getComments().stream().map(Comment::toComment).toList();
+        article.setComments(commentList.stream().sorted((comment1,comment2)->Long.compare(comment2.getId(), comment1.getId())).toList());
         article.setImages(entity.getImages());
         return article;
     }

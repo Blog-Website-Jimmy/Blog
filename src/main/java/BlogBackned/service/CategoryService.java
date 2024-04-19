@@ -2,6 +2,7 @@ package BlogBackned.service;
 
 import BlogBackned.entity.ArticleEntity;
 import BlogBackned.entity.CategoryEntity;
+import BlogBackned.exception.NoCategoryWithThisIdException;
 import BlogBackned.helper.HelperFunctions;
 import BlogBackned.repository.CategoryRepository;
 import org.springframework.data.domain.Page;
@@ -29,5 +30,14 @@ public class CategoryService extends HelperFunctions {
         var categoryEntity = categoryRepository.findByName(category);
         var articles = categoryEntity.get().getArticles();
         return makingPagination(articles, pageable);
+    }
+
+    public String updateCategoey(long id, String name) {
+
+        var categoryEntity = categoryRepository.findById(id).orElseThrow(NoCategoryWithThisIdException::new);
+        categoryEntity.setName(name);
+        categoryRepository.save(categoryEntity);
+
+        return "Category updated successfully!";
     }
 }
