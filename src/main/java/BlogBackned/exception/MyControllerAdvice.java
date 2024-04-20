@@ -42,6 +42,11 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("Image not found!", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoArticleWithThisIdException.class)
+    public ResponseEntity<String> articleNotFound(NoArticleWithThisIdException noArticleWithThisIdException) {
+        return new ResponseEntity<>("Article not found!", HttpStatus.BAD_REQUEST);
+    }
+
 
     //    ALWAYS KEEP THIS METHOD AT THE BOTTOM
     @Override

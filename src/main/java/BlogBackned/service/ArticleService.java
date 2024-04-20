@@ -4,10 +4,7 @@ import BlogBackned.config.BeanNames;
 import BlogBackned.entity.ArticleEntity;
 import BlogBackned.entity.CommentEntity;
 import BlogBackned.entity.ImageEntity;
-import BlogBackned.exception.ArticleWithThisTitleAlreadyExistsException;
-import BlogBackned.exception.NoAuthorWithThisIdException;
-import BlogBackned.exception.NoCategoryWithThisIdException;
-import BlogBackned.exception.NoImageWithThisIdException;
+import BlogBackned.exception.*;
 import BlogBackned.helper.HelperFunctions;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.repository.*;
@@ -23,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,8 +48,9 @@ public class ArticleService extends HelperFunctions {
     public Page<ArticleEntity> getAllArticles(int page,  int size) {
         Pageable pageable = PageRequest.of(page, size);
         var articles = articleRepository.findAll();
+        var notDeletedArticles = articles.stream().filter(entity -> entity.getDeletedAt() == null).toList();
 
-        return makingPagination(articles, pageable);
+        return makingPagination(notDeletedArticles, pageable);
     }
 
     public String saveArticle(ArticlePostRequest request) {
@@ -122,10 +121,17 @@ public class ArticleService extends HelperFunctions {
     }
 
     public String dislikeArticle(long id) {
-        var articleEntity = articleRepository.findById(id).get();
+        var articleEntity = articleRepository.findById(id).orElseThrow(NoArticleWithThisIdException::new);
         var likeCounts = articleEntity.getLikes();
         articleEntity.setLikes(likeCounts - 1);
         articleRepository.save(articleEntity);
         return "Article was disliked!";
+    }
+
+    public String deleteArticle(long id) {
+        var articleEntity = articleRepository.findById(id).orElseThrow(NoArticleWithThisIdException::new);
+        articleEntity.setDeletedAt(OffsetDateTime.now());
+        articleRepository.save(articleEntity);
+        return "Article was deleted!";
     }
 }

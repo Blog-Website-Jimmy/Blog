@@ -17,7 +17,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("article")
-@CrossOrigin
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -58,8 +57,14 @@ public class ArticleController {
     public ResponseEntity<String> likeArticle(@PathVariable("article_id") long id) {
         return ResponseEntity.ok(articleService.likeArticle(id));
     }
+
     @PostMapping("dislike/{article_id}")
     public ResponseEntity<String> dislikeArticle(@PathVariable("article_id") long id) {
         return ResponseEntity.ok(articleService.dislikeArticle(id));
+    }
+
+    @DeleteMapping("delete/{article_id}")
+    public ResponseEntity<String> deleteArticle(@PathVariable("article_id") long id) {
+        return ResponseEntity.ok(articleService.deleteArticle(id));
     }
 }
