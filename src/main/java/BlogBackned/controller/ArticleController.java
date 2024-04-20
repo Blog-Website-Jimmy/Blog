@@ -6,6 +6,7 @@ import BlogBackned.request.ArticlePostRequest;
 import BlogBackned.request.CommentRequest;
 import BlogBackned.service.ArticleService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +52,14 @@ public class ArticleController {
     public ResponseEntity<String> addComment(@RequestBody CommentRequest request) {
 
         return ResponseEntity.ok(articleService.addComment(request));
+    }
+
+    @PostMapping("like/{article_id}")
+    public ResponseEntity<String> likeArticle(@PathVariable("article_id") long id) {
+        return ResponseEntity.ok(articleService.likeArticle(id));
+    }
+    @PostMapping("dislike/{article_id}")
+    public ResponseEntity<String> dislikeArticle(@PathVariable("article_id") long id) {
+        return ResponseEntity.ok(articleService.dislikeArticle(id));
     }
 }

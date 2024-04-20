@@ -20,6 +20,7 @@ public class Article {
     private List<Comment> comments;
     private List<ImageEntity> images;
     private int stars;
+    private int likes;
 
     public static Article toArticle(ArticleEntity entity) {
         Article article = new Article();
@@ -34,6 +35,7 @@ public class Article {
         List<Comment> commentList = entity.getComments().stream().map(Comment::toComment).toList();
         article.setComments(commentList.stream().sorted((comment1,comment2)->Long.compare(comment2.getId(), comment1.getId())).toList());
         article.setImages(entity.getImages());
+        article.setLikes(entity.getLikes());
         return article;
     }
 }

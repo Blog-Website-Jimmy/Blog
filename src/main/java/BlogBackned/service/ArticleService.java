@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -112,5 +111,21 @@ public class ArticleService extends HelperFunctions {
         commentEntity.setArticle(articleRepository.findById(request.getArticleId()).get());
         commentRepository.save(commentEntity);
         return "Comment was added successfully!";
+    }
+
+    public String likeArticle(long id) {
+        var articleEntity = articleRepository.findById(id).get();
+        var likeCounts = articleEntity.getLikes();
+        articleEntity.setLikes(likeCounts + 1);
+        articleRepository.save(articleEntity);
+        return "Article was liked!";
+    }
+
+    public String dislikeArticle(long id) {
+        var articleEntity = articleRepository.findById(id).get();
+        var likeCounts = articleEntity.getLikes();
+        articleEntity.setLikes(likeCounts - 1);
+        articleRepository.save(articleEntity);
+        return "Article was disliked!";
     }
 }

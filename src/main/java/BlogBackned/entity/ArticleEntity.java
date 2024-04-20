@@ -3,6 +3,7 @@ package BlogBackned.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,6 +54,9 @@ public class ArticleEntity extends TimeIntegration {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int likes = 0;
 
     @Override
     public String toString() {
