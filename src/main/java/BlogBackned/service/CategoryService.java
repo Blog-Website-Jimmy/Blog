@@ -29,7 +29,8 @@ public class CategoryService extends HelperFunctions {
         Pageable pageable = PageRequest.of(page, size);
         var categoryEntity = categoryRepository.findByName(category);
         var articles = categoryEntity.get().getArticles();
-        return makingPagination(articles, pageable);
+        var notDeletedArticles = articles.stream().filter(artice -> artice.getDeletedAt() == null).toList();
+        return makingPagination(notDeletedArticles, pageable);
     }
 
     public String updateCategoey(long id, String name) {
