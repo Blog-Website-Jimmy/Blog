@@ -3,6 +3,8 @@ package BlogBackned.controller;
 import BlogBackned.model.ArticlePaginated;
 import BlogBackned.model.Category;
 import BlogBackned.service.CategoryService;
+import jakarta.websocket.server.PathParam;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +30,22 @@ public class CategoryController {
     }
 
     @PostMapping("update/{id}")
-    public ResponseEntity<String> updateCategory(@PathVariable("id") long id, @RequestParam("name") String name) {
-        System.out.println(id + " and "+ name);
-        return ResponseEntity.ok(categoryService.updateCategoey(id, name));
+    public ResponseEntity<String> updateCategory(@PathVariable("id") long id, @RequestBody String name) {
+        System.out.println(id + " and " + name);
+        return ResponseEntity.ok(categoryService.updateCategory(id, name));
     }
 
     @GetMapping("status")
     public String getStatus() {
         return "Category controller is working fine and healthy!";
+    }
+
+    @PostMapping("add")
+    public ResponseEntity<String> addCategory(@RequestBody String name) {
+        return ResponseEntity.ok(categoryService.addCategory(name));
+    }
+    @DeleteMapping("delete/{category_id}")
+    public ResponseEntity<String> deleteArticle(@PathVariable("category_id") long id) {
+        return ResponseEntity.ok(categoryService.deleteCategory(id));
     }
 }

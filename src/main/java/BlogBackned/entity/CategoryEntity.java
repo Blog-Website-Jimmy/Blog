@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "categories")
-public class CategoryEntity {
+public class CategoryEntity extends TimeIntegration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

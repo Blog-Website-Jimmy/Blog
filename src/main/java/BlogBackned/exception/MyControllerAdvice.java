@@ -46,6 +46,10 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> articleNotFound(NoArticleWithThisIdException noArticleWithThisIdException) {
         return new ResponseEntity<>("Article not found!", HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(CategoryWithThisNameAlreadyExists.class)
+    public ResponseEntity<String> categoryAlreadyExists(CategoryWithThisNameAlreadyExists categoryWithThisNameAlreadyExists) {
+        return new ResponseEntity<>("Category with this name already exists!", HttpStatus.BAD_REQUEST);
+    }
 
 
     //    ALWAYS KEEP THIS METHOD AT THE BOTTOM

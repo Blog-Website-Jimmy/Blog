@@ -38,7 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping(value = "upload/image/{article}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ImageDetails> uploadImage(@RequestPart MultipartFile image, @PathVariable String article) {
+        public ResponseEntity<ImageDetails> uploadImage(@RequestPart MultipartFile image, @PathVariable String article) {
         return ResponseEntity.ok(articleService.uploadImage(image, article));
     }
 
