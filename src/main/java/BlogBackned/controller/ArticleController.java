@@ -38,7 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping(value = "upload/image/{article}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-        public ResponseEntity<ImageDetails> uploadImage(@RequestPart MultipartFile image, @PathVariable String article) {
+    public ResponseEntity<ImageDetails> uploadImage(@RequestPart MultipartFile image, @PathVariable String article) {
         return ResponseEntity.ok(articleService.uploadImage(image, article));
     }
 
@@ -66,5 +66,15 @@ public class ArticleController {
     @DeleteMapping("delete/{article_id}")
     public ResponseEntity<String> deleteArticle(@PathVariable("article_id") long id) {
         return ResponseEntity.ok(articleService.deleteArticle(id));
+    }
+
+    @DeleteMapping("delete/image/{image_id}")
+    public ResponseEntity<String> deleteArticleImage(@PathVariable("image_id") long id) {
+        return ResponseEntity.ok(articleService.deleteArticleImage(id));
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<String> updatePost(@Valid @RequestBody ArticlePostRequest request) {
+        return ResponseEntity.ok(articleService.updateArticle(request));
     }
 }

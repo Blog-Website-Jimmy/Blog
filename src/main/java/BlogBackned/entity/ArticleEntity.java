@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "articles")
 @Entity
@@ -28,11 +29,11 @@ public class ArticleEntity extends TimeIntegration {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "article_images",
                 joinColumns = @JoinColumn(name = "article_id"),
                 inverseJoinColumns = @JoinColumn(name = "image_id"))
-    private List<ImageEntity> images;
+    private Set<ImageEntity> images;
 
 
     @Min(0)

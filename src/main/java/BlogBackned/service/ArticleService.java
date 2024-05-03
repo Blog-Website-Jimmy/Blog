@@ -21,9 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class ArticleService extends HelperFunctions {
@@ -94,8 +95,8 @@ public class ArticleService extends HelperFunctions {
     }
 
     @Transactional
-    public List<ImageEntity> getImagesFromIds(List<Long> ids) {
-        List<ImageEntity> images = new ArrayList<>();
+    public Set<ImageEntity> getImagesFromIds(List<Long> ids) {
+        Set<ImageEntity> images = new HashSet<>();
         ids.forEach(id->{
             var image = imageRepository.findById(id).orElseThrow(NoImageWithThisIdException::new);
             images.add(image);
@@ -133,5 +134,30 @@ public class ArticleService extends HelperFunctions {
         articleEntity.setDeletedAt(OffsetDateTime.now());
         articleRepository.save(articleEntity);
         return "Article was deleted!";
+    }
+
+    @Transactional
+    public String deleteArticleImage(long id) {
+        var articlesByImageId = articleRepository.findByImageId(id);
+        var imageEntity = imageRepository.getReferenceById(id);
+        articlesByImageId.stream().forEach(articleEntity->{
+           articleEntity.getImages().remove(imageEntity);
+       });
+        articleRepository.saveAllAndFlush(articlesByImageId);
+        return "Image was deleted!";
+    }
+
+    public String updateArticle(ArticlePostRequest request) {
+        var articleToUpdate = articleRepository.findByTitle(request.getTitle()).orElseThrow(NoArticleWithThisTitleException::new);
+        articleToUpdate.setAuthor(authorRepository.findById(request.getAuthorId()).orElseThrow(NoAuthorWithThisIdException::new));
+        articleToUpdate.setCategory(categoryRepository.findById(request.getCategoryId()).orElseThrow(NoCategoryWithThisIdException::new));
+        articleToUpdate.setContent(request.getContent());
+        articleToUpdate.setBrief(request.getBrief());
+        var images = articleToUpdate.getImages();
+        images.addAll(getImagesFromIds(request.getImageIds()));
+        articleToUpdate.setImages(images);
+        articleRepository.save(articleToUpdate);
+        return "Article was updated!";
+
     }
 }

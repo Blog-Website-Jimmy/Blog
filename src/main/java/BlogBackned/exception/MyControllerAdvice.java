@@ -51,6 +51,11 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("Category with this name already exists!", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoArticleWithThisTitleException.class)
+    public ResponseEntity<String> articleDoesNotExists(NoArticleWithThisTitleException noArticleWithThisTitleException) {
+        return new ResponseEntity<>("There is no article with this title!", HttpStatus.BAD_REQUEST);
+    }
+
 
     //    ALWAYS KEEP THIS METHOD AT THE BOTTOM
     @Override
