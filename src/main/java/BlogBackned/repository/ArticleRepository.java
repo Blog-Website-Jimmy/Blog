@@ -1,6 +1,7 @@
 package BlogBackned.repository;
 
 import BlogBackned.entity.ArticleEntity;
+import BlogBackned.model.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,4 +17,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
     @Query(value = "SELECT * FROM articles a WHERE lower(a.title) LIKE %:keyword% OR lower(a.brief) LIKE %:keyword%", nativeQuery = true)
     List<ArticleEntity> findByKeyword(String keyword);
 
+    @Query(value = "SELECT * FROM articles WHERE deleted_at IS NULL ORDER BY likes DESC LIMIT 3", nativeQuery = true)
+    List<ArticleEntity> findTopThree();
 }

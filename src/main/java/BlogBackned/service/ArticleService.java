@@ -6,6 +6,7 @@ import BlogBackned.entity.CommentEntity;
 import BlogBackned.entity.ImageEntity;
 import BlogBackned.exception.*;
 import BlogBackned.helper.HelperFunctions;
+import BlogBackned.model.Article;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.repository.*;
 import BlogBackned.request.ArticlePostRequest;
@@ -21,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ArticleService extends HelperFunctions {
@@ -177,4 +175,12 @@ public class ArticleService extends HelperFunctions {
 
         return makingPagination(notDeletedArticles, pageable);
     }
+
+    public List<Article> getTopArticles() {
+        var topThree = articleRepository.findTopThree();
+        List<Article> articles = new ArrayList<>();
+        topThree.forEach(entity -> articles.add(Article.toArticle(entity)));
+        return articles;
+    }
+
 }

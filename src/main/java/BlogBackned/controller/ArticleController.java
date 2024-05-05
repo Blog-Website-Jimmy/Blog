@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -89,4 +90,8 @@ public class ArticleController {
         return ResponseEntity.ok(ArticlePaginated.toArticle(articleService.searchByKeyword(keyword, page, size)));
     }
 
+    @GetMapping("top-articles")
+    public ResponseEntity<List<Article>> getTopArticles() {
+        return ResponseEntity.ok(articleService.getTopArticles());
+    }
 }
