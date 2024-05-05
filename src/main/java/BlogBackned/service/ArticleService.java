@@ -6,6 +6,7 @@ import BlogBackned.entity.CommentEntity;
 import BlogBackned.entity.ImageEntity;
 import BlogBackned.exception.*;
 import BlogBackned.helper.HelperFunctions;
+import BlogBackned.model.Article;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.repository.*;
 import BlogBackned.request.ArticlePostRequest;
@@ -160,4 +161,9 @@ public class ArticleService extends HelperFunctions {
         return "Article was updated!";
 
     }
+
+    public ArticleEntity getOneArticle(String title) {
+        return articleRepository.findByTitle(title).orElseThrow(NoArticleWithThisTitleException::new);
+    }
+
 }

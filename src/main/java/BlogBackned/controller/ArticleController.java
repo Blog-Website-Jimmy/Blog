@@ -1,5 +1,6 @@
 package BlogBackned.controller;
 
+import BlogBackned.model.Article;
 import BlogBackned.model.ArticlePaginated;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.request.ArticlePostRequest;
@@ -76,5 +77,10 @@ public class ArticleController {
     @PostMapping("update")
     public ResponseEntity<String> updatePost(@Valid @RequestBody ArticlePostRequest request) {
         return ResponseEntity.ok(articleService.updateArticle(request));
+    }
+
+    @GetMapping("get-one")
+    public ResponseEntity<Article> getOneArticle(@Param("title") String title) {
+        return ResponseEntity.ok(Article.toArticle(articleService.getOneArticle(title)));
     }
 }
