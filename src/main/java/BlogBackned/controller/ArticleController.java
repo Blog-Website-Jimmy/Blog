@@ -83,4 +83,10 @@ public class ArticleController {
     public ResponseEntity<Article> getOneArticle(@Param("title") String title) {
         return ResponseEntity.ok(Article.toArticle(articleService.getOneArticle(title)));
     }
+
+    @GetMapping("search/{keyword}")
+    public ResponseEntity<?> searchByKeyword(@PathVariable String keyword, @Param("page") int page, @Param("size") int size) {
+        return ResponseEntity.ok(ArticlePaginated.toArticle(articleService.searchByKeyword(keyword, page, size)));
+    }
+
 }

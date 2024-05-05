@@ -6,7 +6,6 @@ import BlogBackned.entity.CommentEntity;
 import BlogBackned.entity.ImageEntity;
 import BlogBackned.exception.*;
 import BlogBackned.helper.HelperFunctions;
-import BlogBackned.model.Article;
 import BlogBackned.model.ImageDetails;
 import BlogBackned.repository.*;
 import BlogBackned.request.ArticlePostRequest;
@@ -166,4 +165,16 @@ public class ArticleService extends HelperFunctions {
         return articleRepository.findByTitle(title).orElseThrow(NoArticleWithThisTitleException::new);
     }
 
+    public Page<ArticleEntity> searchByKeyword(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<ArticleEntity> resultArticles ;
+        if (keyword.isBlank() || keyword.isEmpty()) {
+            resultArticles = articleRepository.findAll();
+        } else {
+             resultArticles = articleRepository.findByKeyword(keyword);
+        }
+        var notDeletedArticles = resultArticles.stream().filter(entity -> entity.getDeletedAt() == null).toList();
+
+        return makingPagination(notDeletedArticles, pageable);
+    }
 }
