@@ -18,9 +18,9 @@ public class CategoryEntity extends TimeIntegration {
     @Column(nullable = false, unique = true)
     private String name;
 
-
     @OneToMany(mappedBy = "category")
     private List<ArticleEntity> articles;
 
+    private Integer priority;
 
 }

@@ -35,20 +35,22 @@ public class CategoryService extends HelperFunctions {
         return makingPagination(notDeletedArticles, pageable);
     }
 
-    public String updateCategory(long id, String name) {
+    public String updateCategory(long id, String name, int priority) {
 
         var categoryEntity = categoryRepository.findById(id).orElseThrow(NoCategoryWithThisIdException::new);
         categoryEntity.setName(name);
+        categoryEntity.setPriority(priority);
         categoryRepository.save(categoryEntity);
 
         return "Category updated successfully!";
     }
 
-    public String addCategory(String name) {
+    public String addCategory(String name, int order) {
         var category = categoryRepository.findByName(name);
         if (category.isPresent()) throw new CategoryWithThisNameAlreadyExists();
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setName(name);
+        categoryEntity.setPriority(order);
         categoryRepository.save(categoryEntity);
         return "Category was created!";
     }
