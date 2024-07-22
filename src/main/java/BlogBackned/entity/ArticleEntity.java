@@ -59,6 +59,12 @@ public class ArticleEntity extends TimeIntegration {
     @Column(columnDefinition = "INT DEFAULT 0")
     private int likes = 0;
 
+    public void setContent(String content) {
+        String temp =  content.replaceAll("style=\"visibility: hidden;", "style=\"visibility: visible;");
+        temp = temp.replaceAll("style=\"z-index: 2;", "style=\"z-index: -1; ");
+        this.content = temp;
+    }
+
     @Override
     public String toString() {
         return "ArticleEntity{" +
