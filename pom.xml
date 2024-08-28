@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.jemsit</groupId>
-	<artifactId>BlogBackned</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>BlogBackned</name>
+	<artifactId>Blog</artifactId>
+	<version>0.0.1</version>
+	<name>Blog</name>
 	<description>part of back end for my blog website</description>
 	<properties>
 		<java.version>17</java.version>
@@ -87,6 +87,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+					<image>
+						<name>jimmyshukurow/blog-articles:v1</name>
+					</image>
 				</configuration>
 			</plugin>
 		</plugins>
