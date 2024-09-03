@@ -6,6 +6,7 @@ import Blog.exception.CategoryWithThisNameAlreadyExists;
 import Blog.exception.NoCategoryWithThisIdException;
 import Blog.helper.HelperFunctions;
 import Blog.repository.CategoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 public class CategoryService extends HelperFunctions {
 
@@ -24,6 +26,7 @@ public class CategoryService extends HelperFunctions {
     }
 
     public List<CategoryEntity> getAllCategories() {
+        log.info("jimi is in blog");
         return categoryRepository.findAll().stream().filter(entity -> entity.getDeletedAt()==null).toList();
     }
 
