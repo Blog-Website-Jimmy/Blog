@@ -7,6 +7,7 @@ import Blog.request.ArticlePostRequest;
 import Blog.request.CommentRequest;
 import Blog.service.ArticleService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,8 @@ public class ArticleController {
     }
 
     @GetMapping("get-all")
-    public ResponseEntity<?> getAllArticles(@Param("page") int page, @Param("size") int size) {
-        var articles = articleService.getAllArticles(page, size);
-        return ResponseEntity.ok(ArticlePaginated.toArticle(articles));
+    public ResponseEntity<Page<Article>> getAllArticles(@Param("page") int page, @Param("size") int size) {
+        return ResponseEntity.ok(articleService.getAllArticles(page, size));
     }
 
     @PostMapping("save")
@@ -44,7 +44,7 @@ public class ArticleController {
 
     @GetMapping("status")
     public String getStatus() {
-        return "Article controller is wokring!";
+        return "Article controller is working!";
     }
 
     @PostMapping("add-comment")

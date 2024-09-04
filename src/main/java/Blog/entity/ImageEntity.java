@@ -1,5 +1,6 @@
 package Blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,16 @@ public class ImageEntity {
     private String pathOrURL;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "article_id")
+    @JsonBackReference
     private ArticleEntity article;
 
+    @Override
+    public String toString() {
+        return "ImageEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", pathOrURL='" + pathOrURL + '\'' +
+                '}';
+    }
 }

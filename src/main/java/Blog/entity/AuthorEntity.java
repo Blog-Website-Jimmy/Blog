@@ -3,7 +3,6 @@ package Blog.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class AuthorEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @BatchSize(size = 2)
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<ArticleEntity> articles;
 

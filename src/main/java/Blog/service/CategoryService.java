@@ -26,7 +26,6 @@ public class CategoryService extends HelperFunctions {
     }
 
     public List<CategoryEntity> getAllCategories() {
-        log.info("jimi is in blog");
         return categoryRepository.findAll().stream().filter(entity -> entity.getDeletedAt()==null).toList();
     }
 

@@ -11,6 +11,7 @@ import Blog.model.ImageDetails;
 import Blog.repository.*;
 import Blog.request.ArticlePostRequest;
 import Blog.request.CommentRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class ArticleService extends HelperFunctions {
     private final ArticleRepository articleRepository;
@@ -46,14 +48,15 @@ public class ArticleService extends HelperFunctions {
         this.uploadImagePath = uploadImagePath;
     }
 
-    public Page<ArticleEntity> getAllArticles(int page,  int size) {
+    public Page<Article> getAllArticles(int page,  int size) {
         Pageable pageable = PageRequest.of(page, size);
         var articles = articleRepository.findAll();
         var notDeletedArticles = articles.stream().filter(entity -> entity.getDeletedAt() == null).toList();
-
-        return makingPagination(notDeletedArticles, pageable);
+        List<Article> converted = notDeletedArticles.stream().map(Article::toArticle).toList();
+        return makingPagination(converted, pageable);
     }
 
+    @Transactional
     public String saveArticle(ArticlePostRequest request) {
         var article = articleRepository.findByTitle(request.getTitle());
         if (article.isPresent()) throw new ArticleWithThisTitleAlreadyExistsException();
@@ -65,8 +68,7 @@ public class ArticleService extends HelperFunctions {
         articleEntity.setContent(request.getContent());
         articleEntity.setAuthor(author);
         articleEntity.setCategory(category);
-        articleEntity.setImages(getImagesFromIds(request.getImageIds()));
-        System.out.println(articleEntity);
+        getImagesFromIds(request.getImageIds()).forEach(imageEntity -> articleEntity.addImage(imageEntity));
         articleRepository.save(articleEntity);
         return "Article was saved successfully!";
     }

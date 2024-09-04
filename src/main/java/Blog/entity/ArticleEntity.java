@@ -1,12 +1,13 @@
 package Blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "articles")
@@ -27,9 +28,14 @@ public class ArticleEntity extends TimeIntegration {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @BatchSize(size = 2)
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<ImageEntity> images;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ImageEntity> images = new ArrayList<>();
+
+    public void addImage(ImageEntity imageEntity) {
+        images.add(imageEntity);
+        imageEntity.setArticle(this);
+    }
 
     @Min(0)
     @Max(5)
@@ -55,7 +61,7 @@ public class ArticleEntity extends TimeIntegration {
     private int likes = 0;
 
     public void setContent(String content) {
-        String temp =  content.replaceAll("style=\"visibility: hidden;", "style=\"visibility: visible;");
+        String temp = content.replaceAll("style=\"visibility: hidden;", "style=\"visibility: visible;");
         temp = temp.replaceAll("style=\"z-index: 2;", "style=\"z-index: -1; ");
         this.content = temp;
     }
@@ -68,6 +74,7 @@ public class ArticleEntity extends TimeIntegration {
                 ", content='" + content + '\'' +
                 ", author=" + author +
                 ", category=" + category +
+                ", image ids=" + images +
                 '}';
     }
 }
